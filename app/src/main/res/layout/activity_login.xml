@@ -23,11 +23,11 @@
 
     <EditText
         android:id="@+id/Email"
-        android:layout_width="330dp"
+        android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/gray"
+        android:background="#CEDBE1"
         android:ems="10"
         android:fontFamily="sans-serif"
         android:hint="Email"
@@ -45,11 +45,11 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="330dp"
+        android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/gray"
+        android:background="#CEDBE1"
         android:ems="10"
         android:fontFamily="sans-serif"
         android:hint="Password"

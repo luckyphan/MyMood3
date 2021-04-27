@@ -40,7 +40,7 @@ import com.google.firebase.firestore.Query;
 
 import com.example.mymood2.auth.Login;
 import com.example.mymood2.auth.Register;
-import com.example.mymood2.model.Note;
+import com.example.mymood2.design.Note;
 import com.example.mymood2.note.AddNote;
 import com.example.mymood2.note.EditNote;
 import com.example.mymood2.note.NoteDetails;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView nav_view;
-    RecyclerView noteLists;
+    RecyclerView nList;
     FirebaseFirestore fStore;
     FirestoreRecyclerAdapter<Note,NoteViewHolder> noteAdapter;
     FirebaseUser user;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         Query query = fStore.collection("notes").document(user.getUid()).collection("myNotes").orderBy("title", Query.Direction.DESCENDING);
-        // query notes > uuid > mynotes
+
 
         FirestoreRecyclerOptions<Note> allNotes = new FirestoreRecyclerOptions.Builder<Note>()
                 .setQuery(query,Note.class)
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        noteLists = findViewById(R.id.notelist);
+        nList = findViewById(R.id.notelist);
         drawerLayout = findViewById(R.id.drawer);
         nav_view = findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
-        noteLists.setLayoutManager(new StaggeredGridLayoutManager(10,StaggeredGridLayoutManager.HORIZONTAL));
-        noteLists.setAdapter(noteAdapter);
+        nList.setLayoutManager(new StaggeredGridLayoutManager(10,StaggeredGridLayoutManager.HORIZONTAL));
+        nList.setAdapter(noteAdapter);
 
         View headerView = nav_view.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.userDisplayName);
@@ -205,21 +205,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
                 break;
 
-            case R.id.sync:
-                if(user.isAnonymous()){
-                    startActivity(new Intent(this, Login.class));
-                    overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
-                }else {
-                    Toast.makeText(this, "Saved.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
             case R.id.logout:
                 checkUser();
+                startActivity(new Intent(getApplicationContext(),Login.class));
                 break;
 
             default:
-                Toast.makeText(this, "Coming soon.", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -231,9 +222,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else {
             FirebaseAuth.getInstance().signOut();
             overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
+            startActivity(new Intent(getApplicationContext(),Login.class));
+            finish();
         }
     }
-
     private void displayAlert() {
         AlertDialog.Builder warning = new AlertDialog.Builder(this)
                 .setTitle("Are you sure ?")
@@ -274,7 +266,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.settings){
-            Toast.makeText(this, "Settings Menu is Clicked.", Toast.LENGTH_SHORT).show();
+            checkUser();
+            startActivity(new Intent(getApplicationContext(),Login.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -298,15 +291,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         List<Integer> colorCode = new ArrayList<>();
         colorCode.add(R.color.blue);
-        colorCode.add(R.color.yellow);
         colorCode.add(R.color.skyblue);
-        colorCode.add(R.color.lightPurple);
-        colorCode.add(R.color.lightGreen);
-        colorCode.add(R.color.gray);
-        colorCode.add(R.color.pink);
-        colorCode.add(R.color.red);
-        colorCode.add(R.color.greenlight);
-        colorCode.add(R.color.notgreen);
 
         Random randomColor = new Random();
         int number = randomColor.nextInt(colorCode.size());

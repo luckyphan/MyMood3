@@ -1,5 +1,6 @@
 package com.example.mymood2.note;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.mymood2.auth.Login;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -98,7 +100,7 @@ public class AddNote extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.close){
             Toast.makeText(this,"Canceled", Toast.LENGTH_SHORT).show();
-            onBackPressed();
+            startActivity(new Intent(getApplicationContext(), Login.class));
 
         }
         return super.onOptionsItemSelected(item);

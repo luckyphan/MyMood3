@@ -1,4 +1,4 @@
-package com.example.mymood2.model;
+package com.example.mymood2.design;
 
 public class Note {
     private String title;
